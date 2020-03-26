@@ -2,7 +2,7 @@
 
 WAITSEC=$1
 if [ -z $WAITSEC ]; then
-        WAITSEC=90
+        WAITSEC=180
 fi
 
 docker-compose build
