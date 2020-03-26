@@ -1,0 +1,17 @@
+#!/bin/bash
+
+WAITSEC=$1
+if [ -z $WAITSEC ]; then
+        WAITSEC=90
+fi
+
+docker-compose build
+echo 'exit' | docker-compose run --service-ports app bash
+echo -n "Waiting db ($WAITSEC sec)"
+for i in $(seq 1 $WAITSEC)
+do
+        echo -n '.' && sleep 1
+done
+echo ''
+docker-compose run --service-ports app python3 manage.py migrate
+docker-compose run --service-ports app python3 manage.py runserver 0.0.0.0:8000
